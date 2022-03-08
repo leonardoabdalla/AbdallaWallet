@@ -85,4 +85,8 @@ const mapDispatchToProps = (dispatch) => ({
   saveEmail: (value) => dispatch(actionCreators.saveInput(value)),
 });
 
+Login.propTypes = {
+  saveEmail: PropTypes.string.isRequired,
+};
+
 export default connect(null, mapDispatchToProps)(Login);
