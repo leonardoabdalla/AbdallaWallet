@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom/cjs/react-router-dom.min';
 import { actionCreators } from '../actions';
 
 class Login extends React.Component {
@@ -28,7 +29,7 @@ class Login extends React.Component {
       const { login, senha } = this.state;
       const lengthMax = 6;
       const validaEmail = /\S+@\S+\.\S+/;
-      const boolValid = validaEmail.test(login) && (senha.length > lengthMax);
+      const boolValid = validaEmail.test(login) && (senha.length >= lengthMax);
       this.setState({
         button: !boolValid,
       });
@@ -69,14 +70,16 @@ class Login extends React.Component {
               onChange={ this.handleChangePassword }
             />
           </label>
-          <button
-            type="button"
-            name="button"
-            disabled={ button }
-            onClick={ this.onSaveButtonClick }
-          >
-            Entrar
-          </button>
+          <Link to="/carteira">
+            <button
+              type="button"
+              name="button"
+              disabled={ button }
+              onClick={ this.onSaveButtonClick }
+            >
+              Entrar
+            </button>
+          </Link>
         </div>
       );
     }
