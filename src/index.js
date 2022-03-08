@@ -7,6 +7,7 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import Login from './pages/Login';
+import Wallet from './pages/Wallet';
 
 ReactDOM.render(
   <BrowserRouter>
@@ -14,6 +15,7 @@ ReactDOM.render(
       <App />
       <Switch>
         <Route exact path="/" component={ Login } />
+        <Route path="/carteira" component={ Wallet } />
       </Switch>
     </Provider>
   </BrowserRouter>,
