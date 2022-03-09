@@ -29,7 +29,7 @@ class Wallet extends React.Component {
 
   handleButton = () => {
     const { formDespesa, despesasTot } = this.state;
-    const { id } = formDespesa;
+    // const { id } = formDespesa;
     // if (despesasTot.length > 0) {
     //   this.setState({
     //     formDespesa[id]: id + 1 ,
