@@ -1,22 +1,22 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import store from './store';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-import Login from './pages/Login';
-import Wallet from './pages/Wallet';
+// import Login from './pages/Login';
+// import Wallet from './pages/Wallet';
 
 ReactDOM.render(
   <BrowserRouter>
     <Provider store={ store }>
       <App />
-      <Switch>
+      {/* <Switch>
         <Route exact path="/" component={ Login } />
         <Route path="/carteira" component={ Wallet } />
-      </Switch>
+      </Switch> */}
     </Provider>
   </BrowserRouter>,
   document.getElementById('root'),

@@ -48,38 +48,42 @@ class Login extends React.Component {
       return (
         <div>
           <p>Página de Login</p>
-          <label htmlFor="login">
-            Login:
-            <input
-              data-testid="email-input"
-              type="text"
-              name="login"
-              placeholder="Digite seu email"
-              value={ login }
-              onChange={ this.handleChangeLogin }
-            />
-          </label>
-          <label htmlFor="senha">
-            Senha:
-            <input
-              data-testid="password-input"
-              type="password"
-              name="senha"
-              placeholder="Digite sua senha"
-              value={ senha }
-              onChange={ this.handleChangePassword }
-            />
-          </label>
-          <Link to="/carteira">
-            <button
-              type="button"
-              name="button"
-              disabled={ button }
-              onClick={ this.onSaveButtonClick }
-            >
-              Entrar
-            </button>
-          </Link>
+          <form>
+            <label htmlFor="login">
+              Email:
+              <input
+                data-testid="email-input"
+                type="text"
+                name="email"
+                id="login"
+                placeholder="Digite seu email"
+                value={ login }
+                onChange={ this.handleChangeLogin }
+              />
+            </label>
+            <label htmlFor="senha">
+              Senha:
+              <input
+                data-testid="password-input"
+                id="senha"
+                type="password"
+                name="senha"
+                placeholder="Digite sua senha"
+                value={ senha }
+                onChange={ this.handleChangePassword }
+              />
+            </label>
+            <Link to="/carteira">
+              <button
+                type="button"
+                name="button"
+                disabled={ button }
+                onClick={ this.onSaveButtonClick }
+              >
+                Entrar
+              </button>
+            </Link>
+          </form>
         </div>
       );
     }
