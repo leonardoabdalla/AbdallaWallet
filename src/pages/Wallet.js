@@ -6,6 +6,7 @@ class Wallet extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      idGlobal: 0,
       formDespesa: {
         id: 0,
         valorDespesa: 0,
@@ -29,19 +30,25 @@ class Wallet extends React.Component {
 
   handleButton = () => {
     const { formDespesa, despesasTot } = this.state;
-    // const { id } = formDespesa;
-    // if (despesasTot.length > 0) {
-    //   this.setState({
-    //     formDespesa[id]: id + 1 ,
-    //   });
-    // }
+    const { idGlobal } = this.state;
+    formDespesa.id = idGlobal + 1;
     this.setState({
       despesasTot: [...despesasTot, formDespesa],
     });
+    if (despesasTot.length > 0) {
+      this.setState((prevState) => ({
+        formDespesa: {
+          ...prevState.formDespesa,
+          id: prevState.idGlobal + 1,
+        },
+        idGlobal: prevState.idGlobal + 1,
+      }));
+    }
   }
 
   render() {
     const { email } = this.props;
+    const { idGlobal } = this.state;
     return (
       <div>
         <div>TrybeWallet</div>
