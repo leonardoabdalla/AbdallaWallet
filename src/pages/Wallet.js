@@ -31,9 +31,12 @@ class Wallet extends React.Component {
   handleButton = () => {
     const { formDespesa, despesasTot } = this.state;
 <<<<<<< HEAD
+<<<<<<< HEAD
     const { idGlobal } = this.state;
     formDespesa.id = idGlobal + 1;
 =======
+=======
+>>>>>>> parent of 3bad41c... Requisito 3
     const { id } = formDespesa;
     // if (despesasTot.length > 0) {
     //   this.setState({
