@@ -1,22 +1,40 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { actionExpenses, recebendoApi } from '../actions';
+import Table from '../components/Table';
 
 class Wallet extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      idGlobal: 0,
       formDespesa: {
-        id: 0,
-        valorDespesa: 0,
-        descricaoDespesa: '',
-        moeda: 'BRL',
-        metodoPagamento: 'Dinheiro',
-        categoriaDespesa: 'Transporte',
+        value: 0,
+        description: '',
+        currency: 'BRL',
+        method: 'Dinheiro',
+        tag: 'Transporte',
+        exchangeRates: [],
       },
-      despesasTot: [],
+      separaMoeda: [],
+      valoresDasDespesas: [],
     };
+  }
+
+  async componentDidMount() {
+    const { saveApi } = this.props;
+    await saveApi();
+    this.validacaoCurrenci();
+  }
+
+  validacaoCurrenci = () => {
+    const { currencies } = this.props;
+    if (currencies.length !== 0) {
+      const recebeMoeda = Object.keys(currencies);
+      this.setState({
+        separaMoeda: [...recebeMoeda],
+      });
+    }
   }
 
   handleChange = ({ target: { name, value } }) => {
@@ -29,45 +47,52 @@ class Wallet extends React.Component {
   }
 
   handleButton = () => {
-    const { formDespesa, despesasTot } = this.state;
-    const { idGlobal } = this.state;
-    formDespesa.id = idGlobal + 1;
-    // const { id } = formDespesa;
-    // if (despesasTot.length > 0) {
-    //   this.setState({
-    //     formDespesa[id]: id + 1 ,
-    //   });
-    // }
-    this.setState({
-      despesasTot: [...despesasTot, formDespesa],
+    const { saveExpenses, saveApi, currencies } = this.props;
+    saveApi();
+    this.setState((prevState) => ({
+      formDespesa: {
+        ...prevState.formDespesa,
+        exchangeRates: { ...currencies },
+      },
+    }), () => {
+      const { formDespesa, valoresDasDespesas } = this.state;
+      saveExpenses(formDespesa);
+      const arrayCurrencies = Object.values(currencies);
+      const cambio = arrayCurrencies
+        .filter((currenci) => currenci.code === formDespesa.currency);
+      const ask = cambio.map((cam) => cam.ask);
+      const soma = ask * formDespesa.value;
+      const array = [...valoresDasDespesas];
+      array.push(Number(soma));
+      this.setState({
+        valoresDasDespesas: array,
+      });
     });
-    if (despesasTot.length > 0) {
-      this.setState((prevState) => ({
-        formDespesa: {
-          ...prevState.formDespesa,
-          id: prevState.idGlobal + 1,
-        },
-        idGlobal: prevState.idGlobal + 1,
-      }));
-    }
+  }
+
+  somaValores = () => {
+    const { valoresDasDespesas } = this.state;
+    const total = valoresDasDespesas.reduce((tot, numero) => (tot + numero), 0);
+    return total.toFixed(2);
   }
 
   render() {
     const { email } = this.props;
-    // const { idGlobal } = this.state;
+    const { separaMoeda, despesasTotais } = this.state;
+    console.log(despesasTotais);
     return (
       <div>
         <div>TrybeWallet</div>
         <header>
           <p data-testid="email-field">{ email }</p>
-          <p data-testid="total-field">0</p>
+          <p data-testid="total-field">{ this.somaValores() }</p>
           <p data-testid="header-currency-field">BRL</p>
         </header>
         <form>
           <label htmlFor="valorDespesa">
             Valor da Despesa:
             <input
-              name="valorDespesa"
+              name="value"
               type="number"
               id="valorDespesa"
               data-testid="value-input"
@@ -78,7 +103,7 @@ class Wallet extends React.Component {
             Descrição da Despesa:
             <input
               id="descricaoDespesa"
-              name="descricaoDespesa"
+              name="description"
               type="text"
               data-testid="description-input"
               onChange={ this.handleChange }
@@ -88,19 +113,27 @@ class Wallet extends React.Component {
             Moeda:
             <select
               id="currency"
-              name="moeda"
+              name="currency"
               type="select"
               data-testid="currency-input"
               onChange={ this.handleChange }
             >
-              <option value="Moeda">Moeda</option>
+              { separaMoeda.map((currencie) => (
+                <option
+                  key={ currencie }
+                  data-testid={ currencie }
+                >
+                  {currencie}
+                </option>
+
+              ))}
             </select>
           </label>
           <label htmlFor="metodoPagamento">
             Método de Pagamento:
             <select
               id="metodoPagamento"
-              name="metodoPagamento"
+              name="method"
               type="select"
               data-testid="method-input"
               onChange={ this.handleChange }
@@ -114,7 +147,7 @@ class Wallet extends React.Component {
             Categoria da Despesa:
             <select
               id="categoriaDespesa"
-              name="categoriaDespesa"
+              name="tag"
               type="select"
               data-testid="tag-input"
               onChange={ this.handleChange }
@@ -133,17 +166,39 @@ class Wallet extends React.Component {
             Adicionar despesa
           </button>
         </form>
+        <Table />
       </div>
     );
   }
 }
 
-const mapStateToProps = ({ user: { email } }) => ({
-  email,
+// const mapStateToProps = ({ wallet: { expenses } }) => ({
+//   expenses,
+// });
+
+// const mapStateToProps = ({ user: { email }, wallet: { expenses, currencies } }) => ({
+//   email,
+//   expenses,
+//   currencies,
+// });
+const mapStateToProps = (state) => ({
+  email: state.user.email,
+  expenses: state.wallet.expenses,
+  currencies: state.wallet.currencies[0],
+  valueGlobal: state.wallet.expenses.value,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  saveExpenses: (form) => dispatch(actionExpenses.saveFuncExpenses(form)),
+  saveApi: () => dispatch(recebendoApi()),
+
 });
 
 Wallet.propTypes = {
   email: PropTypes.string.isRequired,
+  currencies: PropTypes.objectOf(PropTypes.object).isRequired,
+  saveExpenses: PropTypes.func.isRequired,
+  saveApi: PropTypes.func.isRequired,
 };
 
-export default connect(mapStateToProps, null)(Wallet);
+export default connect(mapStateToProps, mapDispatchToProps)(Wallet);
