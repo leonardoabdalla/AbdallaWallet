@@ -57,6 +57,12 @@ class Wallet extends React.Component {
     }), () => {
       const { formDespesa, valoresDasDespesas } = this.state;
       saveExpenses(formDespesa);
+      this.setState((prevState) => ({
+        formDespesa: {
+          ...prevState.formDespesa,
+          value: '',
+        },
+      }));
       const arrayCurrencies = Object.values(currencies);
       const cambio = arrayCurrencies
         .filter((currenci) => currenci.code === formDespesa.currency);
@@ -78,8 +84,7 @@ class Wallet extends React.Component {
 
   render() {
     const { email } = this.props;
-    const { separaMoeda, despesasTotais } = this.state;
-    console.log(despesasTotais);
+    const { separaMoeda, formDespesa } = this.state;
     return (
       <div>
         <div>TrybeWallet</div>
@@ -93,6 +98,7 @@ class Wallet extends React.Component {
             Valor da Despesa:
             <input
               name="value"
+              value={ formDespesa.value }
               type="number"
               id="valorDespesa"
               data-testid="value-input"
@@ -117,6 +123,7 @@ class Wallet extends React.Component {
               type="select"
               data-testid="currency-input"
               onChange={ this.handleChange }
+              value={ formDespesa.currency }
             >
               { separaMoeda.map((currencie) => (
                 <option
@@ -139,8 +146,8 @@ class Wallet extends React.Component {
               onChange={ this.handleChange }
             >
               <option value="dinheiro">Dinheiro</option>
-              <option value="cartaoCredito">Cartão de Crédito</option>
-              <option value="cartaoDebito">Cartão de Débito</option>
+              <option value="Cartão de crédito">Cartão de crédito</option>
+              <option value="cartaoDebito">Cartão de débito</option>
             </select>
           </label>
           <label htmlFor="categoriaDespesa">
@@ -153,7 +160,7 @@ class Wallet extends React.Component {
               onChange={ this.handleChange }
             >
               <option value="alimentacao">Alimentação</option>
-              <option value="lazer">Lazer</option>
+              <option value="Lazer">Lazer</option>
               <option value="trabalho">Trabalho</option>
               <option value="transporte">Transporte</option>
               <option value="saude">Saúde</option>
@@ -171,16 +178,6 @@ class Wallet extends React.Component {
     );
   }
 }
-
-// const mapStateToProps = ({ wallet: { expenses } }) => ({
-//   expenses,
-// });
-
-// const mapStateToProps = ({ user: { email }, wallet: { expenses, currencies } }) => ({
-//   email,
-//   expenses,
-//   currencies,
-// });
 const mapStateToProps = (state) => ({
   email: state.user.email,
   expenses: state.wallet.expenses,

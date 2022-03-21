@@ -38,13 +38,7 @@ class Table extends Component {
                 <td className="table-row">Real</td>
                 <td className="table-row">
                   <button type="button" data-testid="edit-btn">Editar</button>
-                  {/* <button
-                    type="button"
-                    data-testid="delete-btn"
-                    onClick={ () => deleteExpense(id) }
-                  >
-                    Excluir
-                  </button> */}
+                  <button type="button" data-testid="delete-btn">Exluir</button>
                 </td>
               </tr>
             ))}
@@ -56,7 +50,6 @@ class Table extends Component {
 
 Table.propTypes = {
   api: arrayOf(objectOf(PropTypes.any)).isRequired,
-  // deleteExpense: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({

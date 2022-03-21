@@ -66,7 +66,7 @@ describe('3 - Crie um header para a página de carteira contendo as seguintes ca
   });
 });
 
-describe('4 - Desenvolva um formulário para adicionar uma despesa contendo as seguintes características:', () => {
+describe.only('4 - Desenvolva um formulário para adicionar uma despesa contendo as seguintes características:', () => {
   test('Um campo para adicionar o valor da despesa', async () => {
     renderWithRouterAndStore(<Wallet />, '/carteira');
     const valueInput = await screen.findByTestId(VALUE_INPUT_TEST_ID);
@@ -119,7 +119,7 @@ describe('4 - Desenvolva um formulário para adicionar uma despesa contendo as s
     expect(healthOption).toBeInTheDocument();
   });
 
-  test('Um botão com o texto \'Adicionar despesa\' que salva as informações da despesa no estado global e atualiza a soma de despesas no header', async () => {
+  test.only('Um botão com o texto \'Adicionar despesa\' que salva as informações da despesa no estado global e atualiza a soma de despesas no header', async () => {
     const { store } = renderWithRouterAndStore(<Wallet />, '/carteira');
     const addButton = await screen.findByText(/Adicionar despesa/i);
     const valueInput = await screen.findByTestId(VALUE_INPUT_TEST_ID);
@@ -149,10 +149,10 @@ describe('4 - Desenvolva um formulário para adicionar uma despesa contendo as s
         exchangeRates: mockData,
       },
     ];
-
     await waitFor(() => {
       expect(valueInput.value === 0 || valueInput.value === '0' || valueInput.value === '').toBe(true);
     });
+    console.log('teste', store.getState().wallet.expenses)
     expect(store.getState().wallet.expenses).toStrictEqual(expectedStateExpense);
 
     userEvent.type(valueInput, '20');
