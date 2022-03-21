@@ -147,7 +147,7 @@ class Wallet extends React.Component {
             >
               <option value="dinheiro">Dinheiro</option>
               <option value="Cartão de crédito">Cartão de crédito</option>
-              <option value="cartaoDebito">Cartão de débito</option>
+              <option value="Cartão de débito">Cartão de débito</option>
             </select>
           </label>
           <label htmlFor="categoriaDespesa">
@@ -159,11 +159,11 @@ class Wallet extends React.Component {
               data-testid="tag-input"
               onChange={ this.handleChange }
             >
-              <option value="alimentacao">Alimentação</option>
+              <option value="Alimentacao">Alimentação</option>
               <option value="Lazer">Lazer</option>
-              <option value="trabalho">Trabalho</option>
-              <option value="transporte">Transporte</option>
-              <option value="saude">Saúde</option>
+              <option value="Trabalho">Trabalho</option>
+              <option value="Transporte">Transporte</option>
+              <option value="Saúde">Saúde</option>
             </select>
           </label>
           <button
