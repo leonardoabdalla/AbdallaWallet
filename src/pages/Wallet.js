@@ -108,10 +108,11 @@ class Wallet extends React.Component {
           <p data-testid="header-currency-field">BRL</p>
         </header>
         { edit
-          ? <FormEdit
-            editId={ editId }
-            handleEdit={ this.handleEdit }
-          />
+          ? (
+            <FormEdit
+              editId={ editId }
+              handleEdit={ this.handleEdit }
+            />)
           : (
             <form>
               <label htmlFor="valorDespesa">
