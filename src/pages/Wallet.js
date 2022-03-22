@@ -17,7 +17,6 @@ class Wallet extends React.Component {
         exchangeRates: [],
       },
       separaMoeda: [],
-      valoresDasDespesas: [],
     };
   }
 
