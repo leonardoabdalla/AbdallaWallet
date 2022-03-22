@@ -55,7 +55,7 @@ class Wallet extends React.Component {
         exchangeRates: { ...currencies },
       },
     }), () => {
-      const { formDespesa, valoresDasDespesas } = this.state;
+      const { formDespesa } = this.state;
       saveExpenses(formDespesa);
       this.setState((prevState) => ({
         formDespesa: {
@@ -63,16 +63,6 @@ class Wallet extends React.Component {
           value: '',
         },
       }));
-      // const arrayCurrencies = Object.values(currencies);
-      // const cambio = arrayCurrencies
-      //   .filter((currenci) => currenci.code === formDespesa.currency);
-      // const ask = cambio.map((cam) => cam.ask);
-      // const soma = ask * formDespesa.value;
-      // const array = [...valoresDasDespesas];
-      // array.push(Number(soma));
-      // this.setState({
-      //   valoresDasDespesas: array,
-      // });
     });
   }
 

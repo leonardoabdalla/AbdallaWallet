@@ -65,7 +65,7 @@ class Table extends Component {
 
 Table.propTypes = {
   expenses: arrayOf(objectOf(PropTypes.any)).isRequired,
-  deleteTable: PropTypes.func.isRequired,
+  saveDeleteExpenses: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
