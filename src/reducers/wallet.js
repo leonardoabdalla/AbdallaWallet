@@ -15,6 +15,8 @@ function myReducerUserForm(state = INITIAL_STATE, action) {
     return { ...state, expenses: [...state.expenses, newExpense] };
   case 'RECEBE_API':
     return { ...state, currencies: [action.payload] };
+  case 'DELETE_EXPENSES':
+    return { ...state, expenses: action.payload };
   default:
     return state;
   }

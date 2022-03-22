@@ -39,3 +39,9 @@ export const recebendoApi = () => async (dispatch) => {
   const recebeFetch = await apiRecebe();
   dispatch(recebeApi(recebeFetch));
 };
+
+// Boa prática as actions nesse formato(é um formato genérico);
+export const deleteExpenses = (payload) => ({
+  type: 'DELETE_EXPENSES',
+  payload,
+});

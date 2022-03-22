@@ -63,23 +63,31 @@ class Wallet extends React.Component {
           value: '',
         },
       }));
-      const arrayCurrencies = Object.values(currencies);
-      const cambio = arrayCurrencies
-        .filter((currenci) => currenci.code === formDespesa.currency);
-      const ask = cambio.map((cam) => cam.ask);
-      const soma = ask * formDespesa.value;
-      const array = [...valoresDasDespesas];
-      array.push(Number(soma));
-      this.setState({
-        valoresDasDespesas: array,
-      });
+      // const arrayCurrencies = Object.values(currencies);
+      // const cambio = arrayCurrencies
+      //   .filter((currenci) => currenci.code === formDespesa.currency);
+      // const ask = cambio.map((cam) => cam.ask);
+      // const soma = ask * formDespesa.value;
+      // const array = [...valoresDasDespesas];
+      // array.push(Number(soma));
+      // this.setState({
+      //   valoresDasDespesas: array,
+      // });
     });
   }
 
   somaValores = () => {
-    const { valoresDasDespesas } = this.state;
-    const total = valoresDasDespesas.reduce((tot, numero) => (tot + numero), 0);
-    return total.toFixed(2);
+    const { expenses } = this.props;
+    if (expenses.length !== 0) {
+      const total = expenses.reduce((acc, { value, currency, exchangeRates }) => {
+        const { ask } = exchangeRates[currency];
+        acc += (Number(value) * Number(ask));
+        return acc;
+      }, 0);
+      return total;
+    }
+    const total = 0;
+    return total;
   }
 
   render() {
@@ -173,7 +181,7 @@ class Wallet extends React.Component {
             Adicionar despesa
           </button>
         </form>
-        <Table />
+        <Table deleteTable={ this.deleteTable } />
       </div>
     );
   }
@@ -196,6 +204,7 @@ Wallet.propTypes = {
   currencies: PropTypes.objectOf(PropTypes.object).isRequired,
   saveExpenses: PropTypes.func.isRequired,
   saveApi: PropTypes.func.isRequired,
+  expenses: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Wallet);

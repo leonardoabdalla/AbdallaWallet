@@ -1,44 +1,59 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes, { arrayOf, objectOf } from 'prop-types';
+import { deleteExpenses } from '../actions';
 
 class Table extends Component {
+  deleteTable = (id) => {
+    const { expenses, saveDeleteExpenses } = this.props;
+    const expensesAlterado = expenses.filter((expense) => expense.id !== id);
+    console.log(expensesAlterado);
+    saveDeleteExpenses(expensesAlterado);
+  }
+
   render() {
-    const { api } = this.props;
+    const { expenses } = this.props;
     return (
-      <table className="table-expenses">
+      <table>
         <thead>
           <tr>
-            <th className="table-title">Descrição</th>
-            <th className="table-title">Tag</th>
-            <th className="table-title">Método de pagamento</th>
-            <th className="table-title">Valor</th>
-            <th className="table-title">Moeda</th>
-            <th className="table-title">Câmbio utilizado</th>
-            <th className="table-title">Valor convertido</th>
-            <th className="table-title">Moeda de conversão</th>
-            <th className="table-title">Editar/Excluir</th>
+            <th>Descrição</th>
+            <th>Tag</th>
+            <th>Método de pagamento</th>
+            <th>Valor</th>
+            <th>Moeda</th>
+            <th>Câmbio utilizado</th>
+            <th>Valor convertido</th>
+            <th>Moeda de conversão</th>
+            <th>Editar/Excluir</th>
           </tr>
         </thead>
         <tbody>
-          {api
+          {expenses
+          && expenses
             .map(({ id, description, tag, method, value, currency, exchangeRates }) => (
-              <tr className="table-info" key={ id }>
-                <td className="table-row">{ description }</td>
-                <td className="table-row">{ tag}</td>
-                <td className="table-row">{ method }</td>
-                <td className="table-row">{ Number(value).toFixed(2) }</td>
-                <td className="table-row">{ exchangeRates[currency].name }</td>
-                <td className="table-row">
+              <tr key={ id }>
+                <td>{ description }</td>
+                <td>{ tag}</td>
+                <td>{ method }</td>
+                <td>{ Number(value).toFixed(2) }</td>
+                <td>{ exchangeRates[currency].name }</td>
+                <td>
                   { Number(exchangeRates[currency].ask).toFixed(2) }
                 </td>
-                <td className="table-row">
+                <td>
                   { (value * exchangeRates[currency].ask).toFixed(2) }
                 </td>
-                <td className="table-row">Real</td>
-                <td className="table-row">
+                <td>Real</td>
+                <td>
                   <button type="button" data-testid="edit-btn">Editar</button>
-                  <button type="button" data-testid="delete-btn">Exluir</button>
+                  <button
+                    type="button"
+                    data-testid="delete-btn"
+                    onClick={ () => this.deleteTable(id) }
+                  >
+                    Exluir
+                  </button>
                 </td>
               </tr>
             ))}
@@ -49,10 +64,16 @@ class Table extends Component {
 }
 
 Table.propTypes = {
-  api: arrayOf(objectOf(PropTypes.any)).isRequired,
+  expenses: arrayOf(objectOf(PropTypes.any)).isRequired,
+  deleteTable: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
-  api: state.wallet.expenses });
+  expenses: state.wallet.expenses });
 
-export default connect(mapStateToProps, null)(Table);
+const mapDispatchToProps = (dispatch) => ({
+  saveDeleteExpenses: (payload) => dispatch(deleteExpenses(payload)),
+
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Table);
