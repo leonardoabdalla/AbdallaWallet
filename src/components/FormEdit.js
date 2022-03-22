@@ -23,6 +23,7 @@ class FormEdit extends React.Component {
       currency: expenses[editId].currency,
       method: expenses[editId].method,
       tag: expenses[editId].tag,
+      id: editId,
     });
   }
 
@@ -33,14 +34,14 @@ class FormEdit extends React.Component {
   }
 
   handleEditButton = () => {
-    const { editExpensesForm } = this.props;
+    const { editExpensesForm, handleEdit } = this.props;
     editExpensesForm({ ...this.state });
-    // console.log(...this.state);
+    handleEdit();
   }
 
   render() {
     const { value, description, currency, method, tag } = this.state;
-    const { currencies } = this.props;
+    const { editId, expenses } = this.props;
     return (
       <div>
         <form>
@@ -76,7 +77,7 @@ class FormEdit extends React.Component {
               onChange={ this.handleChange }
               value={ currency }
             >
-              { Object.keys(currencies).map((currencie) => (
+              { (Object.keys(expenses[editId].exchangeRates)).map((currencie) => (
                 <option
                   key={ currencie }
                   data-testid={ currencie }
@@ -97,7 +98,7 @@ class FormEdit extends React.Component {
               value={ method }
               onChange={ this.handleChange }
             >
-              <option value="dinheiro">Dinheiro</option>
+              <option value="Dinheiro">Dinheiro</option>
               <option value="Cartão de crédito">Cartão de crédito</option>
               <option value="Cartão de débito">Cartão de débito</option>
             </select>
@@ -123,7 +124,7 @@ class FormEdit extends React.Component {
             type="button"
             onClick={ this.handleEditButton }
           >
-            Salvar
+            Editar despesa
           </button>
         </form>
       </div>
@@ -142,8 +143,8 @@ const mapDispatchToProps = (dispatch) => ({
 FormEdit.propTypes = {
   expenses: PropTypes.arrayOf(PropTypes.object).isRequired,
   editId: PropTypes.number.isRequired,
-  currencies: PropTypes.objectOf(PropTypes.object).isRequired,
   editExpensesForm: PropTypes.func.isRequired,
+  handleEdit: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(FormEdit);

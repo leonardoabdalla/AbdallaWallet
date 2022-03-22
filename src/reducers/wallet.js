@@ -20,7 +20,7 @@ function myReducerUserForm(state = INITIAL_STATE, action) {
   case 'EDIT_EXPENSES':
     return {
       ...state,
-      expense: state.expenses.map((expense) => (
+      expenses: state.expenses.map((expense) => (
         expense.id === action.payload.id
           ? { ...action.payload, exchangeRates: expense.exchangeRates }
           : expense

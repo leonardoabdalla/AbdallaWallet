@@ -89,6 +89,13 @@ class Wallet extends React.Component {
     });
   }
 
+  handleEdit = () => {
+    this.setState({
+      edit: false,
+      editId: 0,
+    });
+  }
+
   render() {
     const { email } = this.props;
     const { separaMoeda, formDespesa, editId, edit } = this.state;
@@ -101,7 +108,10 @@ class Wallet extends React.Component {
           <p data-testid="header-currency-field">BRL</p>
         </header>
         { edit
-          ? <FormEdit editId={ editId } />
+          ? <FormEdit
+            editId={ editId }
+            handleEdit={ this.handleEdit }
+          />
           : (
             <form>
               <label htmlFor="valorDespesa">
