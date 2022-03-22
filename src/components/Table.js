@@ -12,7 +12,7 @@ class Table extends Component {
   }
 
   render() {
-    const { expenses } = this.props;
+    const { expenses, editTable } = this.props;
     return (
       <table>
         <thead>
@@ -46,7 +46,13 @@ class Table extends Component {
                 </td>
                 <td>Real</td>
                 <td>
-                  <button type="button" data-testid="edit-btn">Editar</button>
+                  <button
+                    type="button"
+                    data-testid="edit-btn"
+                    onClick={ () => editTable(id) }
+                  >
+                    Editar
+                  </button>
                   <button
                     type="button"
                     data-testid="delete-btn"
@@ -66,6 +72,7 @@ class Table extends Component {
 Table.propTypes = {
   expenses: arrayOf(objectOf(PropTypes.any)).isRequired,
   saveDeleteExpenses: PropTypes.func.isRequired,
+  editTable: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({

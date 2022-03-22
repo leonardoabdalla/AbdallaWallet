@@ -17,6 +17,15 @@ function myReducerUserForm(state = INITIAL_STATE, action) {
     return { ...state, currencies: [action.payload] };
   case 'DELETE_EXPENSES':
     return { ...state, expenses: action.payload };
+  case 'EDIT_EXPENSES':
+    return {
+      ...state,
+      expense: state.expenses.map((expense) => (
+        expense.id === action.payload.id
+          ? { ...action.payload, exchangeRates: expense.exchangeRates }
+          : expense
+      )),
+    };
   default:
     return state;
   }
