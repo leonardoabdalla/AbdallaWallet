@@ -89,6 +89,7 @@ class Wallet extends React.Component {
     });
   }
 
+  // prop
   handleEdit = () => {
     this.setState({
       edit: false,
